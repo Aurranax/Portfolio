@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, type PointerEvent as ReactPointerEvent } from 'react'
 import {
   ArrowDownRight, ArrowUpRight, Github, Menu, X, Cpu, Plane,
-  Database, Code2, CircuitBoard, MoveUpRight, Layers3, Terminal,
+ Database, Code2, CircuitBoard, MoveUpRight, Layers3,
 } from 'lucide-react'
 import './App.css'
 
@@ -11,7 +11,7 @@ const projects = [
     type: 'SOFTWARE · DATABASE TOOLS',
     title: 'DBLens',
     description: 'A browser-based SQLite workspace for exploring databases, inspecting schemas, analysing query plans and finding indexing opportunities.',
-    tags: ['React-style UI', 'JavaScript', 'SQL.js', 'WebAssembly'],
+    tags: ['Vanilla JavaScript', 'SQL.js', 'WebAssembly', 'CodeMirror'],
     icon: Database,
     link: 'https://github.com/Aurranax/DBLens-Lite',
     linkLabel: 'View repository',
@@ -48,6 +48,36 @@ const capabilities = [
   { icon: Layers3, title: 'Research & Delivery', items: 'Technical documentation · Testing · R&D · Team collaboration' },
 ]
 
+
+function handlePointerMove(event: ReactPointerEvent<HTMLElement>) {
+  if (event.pointerType !== 'mouse') return
+
+  const rect = event.currentTarget.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width
+  const y = (event.clientY - rect.top) / rect.height
+
+  event.currentTarget.style.setProperty('--pointer-x', `${x * 100}%`)
+  event.currentTarget.style.setProperty('--pointer-y', `${y * 100}%`)
+
+  event.currentTarget.style.setProperty(
+    '--tilt-x',
+    `${(0.5 - y) * 5}deg`
+  )
+  event.currentTarget.style.setProperty(
+    '--tilt-y',
+    `${(x - 0.5) * 5}deg`
+  )
+}
+
+function resetPointerPosition(event: ReactPointerEvent<HTMLElement>) {
+  const element = event.currentTarget
+
+  element.style.setProperty('--tilt-x', '0deg')
+  element.style.setProperty('--tilt-y', '0deg')
+  element.style.setProperty('--pointer-x', '50%')
+  element.style.setProperty('--pointer-y', '50%')
+}
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -60,10 +90,20 @@ function App() {
           <span className="brand-mark">A<span>.</span></span>
           <span className="brand-name">ASHER<span> / ENGINEERING</span></span>
         </a>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
+        <button
+          className="menu-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation"
+        >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-        <nav className={menuOpen ? 'nav-links open' : 'nav-links'} aria-label="Main navigation">
+        <nav
+          id="primary-navigation"
+          className={menuOpen ? 'nav-links open' : 'nav-links'}
+          aria-label="Main navigation"
+        >
           <a href="#about" onClick={closeMenu}>About</a>
           <a href="#work" onClick={closeMenu}>Work</a>
           <a href="#capabilities" onClick={closeMenu}>Capabilities</a>
@@ -88,7 +128,7 @@ function App() {
           </div>
         </div>
 
-        <div className="hero-visual" aria-label="Abstract engineering-inspired visual">
+       <div className="hero-visual interactive-surface" aria-label="Abstract engineering-inspired visual" onPointerMove={handlePointerMove} onPointerLeave={resetPointerPosition} >
           <div className="visual-topline"><span>FIELD NOTES / 2026</span><span>FIG. 001</span></div>
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
@@ -143,7 +183,12 @@ function App() {
             {projects.map((project) => {
               const Icon = project.icon
               return (
-                <article className={`project-card ${project.featured ? 'featured' : ''}`} key={project.number}>
+               <article
+                className={`project-card interactive-surface ${project.featured ? 'featured' : ''}`}
+                key={project.number}
+                onPointerMove={handlePointerMove}
+                onPointerLeave={resetPointerPosition}
+                >
                   <div className="project-number">{project.number}</div>
                   <div className="project-main">
                     <div className="project-type">{project.type}</div>
@@ -176,11 +221,22 @@ function App() {
         <div className="capability-grid">
           {capabilities.map((item, index) => {
             const Icon = item.icon
-            return <article className="capability-card" key={item.title}>
-              <div className="capability-top"><span>0{index + 1}</span><Icon size={21} strokeWidth={1.5} /></div>
-              <h3>{item.title}</h3>
-              <p>{item.items}</p>
-            </article>
+
+            return (
+              <article
+                className="capability-card interactive-surface"
+                key={item.title}
+                onPointerMove={handlePointerMove}
+                onPointerLeave={resetPointerPosition}
+              >
+                <div className="capability-top">
+                  <span>0{index + 1}</span>
+                  <Icon size={21} strokeWidth={1.5} />
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.items}</p>
+              </article>
+            )
           })}
         </div>
       </section>

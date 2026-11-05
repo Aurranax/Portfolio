@@ -178,3 +178,220 @@ h1 span, h2 em { color: var(--accent); font-style: normal; }
   .capability-card { min-height: 150px; }
   .achievement-content h2 { font-size: 39px; }
 }
+/* INTERACTIVE SURFACES */
+
+.interactive-surface {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+
+  position: relative;
+  transform-style: preserve-3d;
+  transition:
+    transform 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.interactive-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(55, 145, 135, 0.12),
+    transparent 48%
+  );
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-surface:hover {
+    transform:
+      perspective(900px)
+      rotateX(var(--tilt-x))
+      rotateY(var(--tilt-y))
+      translateY(-5px);
+  }
+
+  .interactive-surface:hover::after {
+    opacity: 1;
+  }
+
+  .project-card:hover,
+  .capability-card:hover {
+    box-shadow:
+      12px 12px 25px #c5ccca,
+      -10px -10px 24px #ffffff;
+  }
+
+  .hero-visual:hover {
+    box-shadow:
+      19px 19px 40px #c5ccca,
+      -18px -18px 40px #ffffff;
+  }
+
+  .button:hover {
+    transform: translateY(-3px) scale(1.015);
+  }
+
+  .nav-links a {
+    transition: color 180ms ease, transform 180ms ease;
+  }
+
+  .nav-links a:hover {
+    transform: translateY(-2px);
+  }
+
+  .project-art {
+    transition: transform 250ms ease;
+  }
+
+  .project-card:hover .project-art {
+    transform: scale(1.06) rotate(-4deg);
+  }
+}
+
+/* MOBILE TOUCH FEEDBACK */
+
+@media (hover: none) {
+  .button:active,
+  .menu-toggle:active {
+    transform: scale(0.97);
+  }
+
+  .project-card:active,
+  .capability-card:active {
+    transform: scale(0.99);
+  }
+
+  .interactive-surface::after {
+    display: none;
+  }
+}
+
+/* MOTION ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-surface,
+  .interactive-surface::after,
+  .project-art,
+  .button {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+/* INTERACTIVE SURFACES */
+
+.interactive-surface {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.interactive-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(55, 145, 135, 0.14),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-surface:hover {
+    transform:
+      perspective(900px)
+      rotateX(var(--tilt-x))
+      rotateY(var(--tilt-y))
+      translateY(-5px);
+  }
+
+  .interactive-surface:hover::after {
+    opacity: 1;
+  }
+
+  .project-card:hover,
+  .capability-card:hover,
+  .hero-visual:hover {
+    box-shadow:
+      12px 12px 25px #c5ccca,
+      -10px -10px 24px #ffffff;
+  }
+
+  .project-card:hover .project-art {
+    transform: scale(1.06) rotate(-4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-surface,
+  .interactive-surface::after {
+    transition: none !important;
+  }
+}
+/* Interactive pointer effects */
+
+.interactive-surface {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.interactive-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgba(55, 145, 135, 0.16),
+    transparent 52%
+  );
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-surface:hover {
+    transform:
+      perspective(900px)
+      rotateX(var(--tilt-x))
+      rotateY(var(--tilt-y))
+      translateY(-5px);
+  }
+
+  .interactive-surface:hover::after {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-surface,
+  .interactive-surface::after {
+    transition: none !important;
+  }
+}
