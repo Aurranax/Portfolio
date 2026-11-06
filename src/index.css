@@ -17,6 +17,7 @@
   --shadow-out: 9px 9px 22px #cbd0cf, -9px -9px 22px #ffffff;
   --shadow-soft: 5px 5px 14px #d0d5d4, -5px -5px 14px #ffffff;
   --shadow-in: inset 4px 4px 9px #cfd4d3, inset -4px -4px 9px #ffffff;
+  --scroll-progress: 0%;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 100px; }
